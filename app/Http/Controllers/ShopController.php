@@ -20,13 +20,14 @@ class ShopController extends Controller
         return view('main');
     }
 
-    public function admin_category()
+    public function admin_category(Request $request)
     {
         $categoryQwery = ShopCategory::query()->with('parentCategory');
         $getCategory = $categoryQwery->get();
         return view('admin_category',
             [
                 'categoryList' => $getCategory,
+                'resultMessage' => $request->session()->get('result') ?? null,
             ]
         );
     }
@@ -51,6 +52,8 @@ class ShopController extends Controller
     public function add_category(Request $request)
     {
         $categoryData = $request->post('form-category');
+
+        $resultMessage = [];
 
         $newCategory = new ShopCategory();
         $newCategory->category_name = $categoryData['form-name'];
@@ -80,12 +83,15 @@ class ShopController extends Controller
 
         $newCategory->category_status = $categoryData['form-status'];
 
-        $newCategory->parent_category = ShopCategory::find(4);
+        $newCategory->parent_category = $categoryData['form-parent'] ?? null;
         $newCategory->category_rating = $categoryData['form-rating'];
 
         $newCategory->save();
 
         $this->uploadCategoryImage($newCategory, $request);
+
+        $request->session()->flash('result', $resultMessage);
+
         return redirect('/admin/category');
     }
 

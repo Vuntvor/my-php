@@ -7,6 +7,17 @@
 
 
 @section('main_content')
+    @if ($resultMessage)
+        @if ($resultMessage['status'] === 'ok')
+            <div class="alert alert-success" role="alert">
+                {{ $resultMessage['message'] }}
+            </div>
+        @elseif ($resultMessage['status'] === 'error')
+            <div class="alert alert-danger" role="alert">
+                {{ $resultMessage['message'] }}
+            </div>
+        @endif
+    @endif
 
     <table class="table table-bordered">
         <tr>
