@@ -22,16 +22,11 @@ class ShopController extends Controller
 
     public function admin_category()
     {
-        $categoryQwery = ShopCategory::query();
+        $categoryQwery = ShopCategory::query()->with('parentCategory');
         $getCategory = $categoryQwery->get();
-        $keyed = $getCategory->mapWithKeys(function ($item, $key) {
-            return [$item['id'] => $item['category_name']];
-        });
-        $keyedCategory = $keyed->all();
         return view('admin_category',
             [
                 'categoryList' => $getCategory,
-                'keyedCategory' => $keyedCategory,
             ]
         );
     }
@@ -84,7 +79,8 @@ class ShopController extends Controller
 
 
         $newCategory->category_status = $categoryData['form-status'];
-        isset($categoryData['form-parent']) ? $newCategory->parent_category = $categoryData['form-parent'] : $newCategory->parent_category = '';
+
+        $newCategory->parent_category = ShopCategory::find(4);
         $newCategory->category_rating = $categoryData['form-rating'];
 
         $newCategory->save();
@@ -97,8 +93,8 @@ class ShopController extends Controller
     {
         $categoryId = $request->route()->parameter('category_id');
         $category = ShopCategory::find($categoryId);
+        $childCategories = $category->childCategories;
         $categoryQwery = ShopCategory::query();
-
         return view('create_category',
             [
                 'categoryList' => $categoryQwery->get(),
