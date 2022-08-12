@@ -26,11 +26,13 @@
             <tr>
                 <td>{{$oneCategory->id}}</td>
                 <td>{{$oneCategory->category_name}}</td>
-                <td><img src="{{$oneCategory->getImageUrl()}}"></td> {{--<td><{{$oneCategory->image_url}}</td> --}}
+                <td>
+                    <img src="{{$oneCategory->getImageUrl()}}" height="50">
+                </td>
                 <td>{{$oneCategory->category_status == 1 ? 'ON' : 'OFF'}}</td>
                 <td>
-                @if (is_numeric($oneCategory->parent_category))
-                {{$keyedCategory[$oneCategory->parent_category]}}
+                @if ($oneCategory->parentCategory)
+                    {{$oneCategory->parentCategory->category_name}}
                 @endif
                 </td>
                 <td>{{$oneCategory->category_rating}}</td>
