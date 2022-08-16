@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
 use Illuminate\Support\Str;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,22 +18,25 @@ use Illuminate\Support\Str;
 
 Route::get('/', ['App\Http\Controllers\ShopController', 'mainShop']);
 
-Route::get('/admin', ['App\Http\Controllers\ShopController', 'admin']);
+Route::get('/admin', ['App\Http\Controllers\Admin\MainController', 'index']);
 
-Route::get('/admin/category', ['App\Http\Controllers\ShopController', 'admin_category']);
+Route::prefix('/admin/category')->group(function () {
+    Route::get('/', [AdminCategoryController::class, 'list'])->name('category.list');
 
-Route::get('/admin/category/category_management', ['App\Http\Controllers\ShopController', 'create_category']);
+    Route::get('/create', [AdminCategoryController::class, 'create'])->name('category.create');
 
-Route::post('/admin/category/category_management/add', ['App\Http\Controllers\ShopController', 'add_category']);
+    Route::post('/add', [AdminCategoryController::class, 'add']);
 
-Route::get('/admin/category/category_management/edit/{category_id}', ['App\Http\Controllers\ShopController', 'edit_category'])
-    ->where('category_id', '[0-9]+')
-    ->name('edit-category');
+    Route::get('/edit/{category_id}', [AdminCategoryController::class, 'edit'])
+        ->where('category_id', '[0-9]+')
+        ->name('category.edit');
 
-Route::post('/admin/category/category_management/edit/{category_id}', ['App\Http\Controllers\ShopController', 'save_category'])
-    ->where('category_id', '[0-9]+')
-    ->name('edit-category');
+    Route::post('/edit/{category_id}', [AdminCategoryController::class, 'save'])
+        ->where('category_id', '[0-9]+')
+        ->name('category.save');
 
-Route::get('/admin/category/category_management/delete/{category_id}', ['App\Http\Controllers\ShopController', 'delete_category'])
-    ->where('category_id', '[0-9]+')
-    ->name('delete-category');
+    Route::get('/delete/{category_id}', [AdminCategoryController::class, 'delete'])
+        ->where('category_id', '[0-9]+')
+        ->name('category.delete');
+});
+

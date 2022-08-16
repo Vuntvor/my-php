@@ -1,4 +1,4 @@
-@extends('shopLayout')
+@extends('admin.layouts.shopLayout')
 
 
 @section('title')
@@ -16,7 +16,8 @@
 
     <div class="row">
         <div class="col-4">
-            <form method="post" action="{{$edit? '/admin/category/category_management/edit/'.$edit: '/admin/category/category_management/add'}}"
+            <form method="post"
+                  action="{{$edit? '/admin/category/edit/'.$edit: '/admin/category/add'}}"
                   enctype="multipart/form-data">
                 @csrf
 
@@ -52,7 +53,7 @@
                     <input type="number" class="form-control" name="form-category[form-rating]" value=""/>
                 </div>
 
-                <a class="btn btn-secondary" href="/admin/category">&laquo; Вернуться</a>
+                <a class="btn btn-secondary" href="{{route('category.list')}}">&laquo; Вернуться</a>
                 <button class="btn btn-success">Сохранить</button>
             </form>
         </div>
