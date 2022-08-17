@@ -25,7 +25,7 @@ Route::prefix('/admin/category')->group(function () {
 
     Route::get('/create', [AdminCategoryController::class, 'create'])->name('category.create');
 
-    Route::post('/add', [AdminCategoryController::class, 'add']);
+    Route::post('/add', [AdminCategoryController::class, 'add'])->name('category.add');
 
     Route::get('/edit/{category_id}', [AdminCategoryController::class, 'edit'])
         ->where('category_id', '[0-9]+')

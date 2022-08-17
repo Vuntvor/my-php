@@ -51,6 +51,7 @@ class CategoryController extends Controller
         $categoryId = $request->route()->parameter('category_id');
         $category = ShopCategory::find($categoryId);
         $categoryQuery = ShopCategory::query();
+//        $categoryQuery->where()
         return view('admin/create_category',
             [
                 'categoryList' => $categoryQuery->get(),
@@ -65,6 +66,8 @@ class CategoryController extends Controller
         $categoryData = $request->post('form-category');
         $categoryId = $request->route()->parameter('category_id');
         $category = ShopCategory::find($categoryId);
+        $duplicateNames = ShopCategory::query()->where('category_name', '=', 'form-name');
+        dd($duplicateNames);
         $category->category_name = $categoryData['form-name'];
         $this->uploadCategoryImage($category, $request);
         $category->category_status = $categoryData['form-status'];
