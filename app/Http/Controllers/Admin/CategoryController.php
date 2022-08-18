@@ -30,6 +30,7 @@ class CategoryController extends Controller
             ]
         );
     }
+
     public function add(Request $request)
     {
         $categoryData = $request->post('form-category');
@@ -66,8 +67,15 @@ class CategoryController extends Controller
         $categoryData = $request->post('form-category');
         $categoryId = $request->route()->parameter('category_id');
         $category = ShopCategory::find($categoryId);
-        $duplicateNames = ShopCategory::query()->where('category_name', '=', 'form-name');
+        $duplicateNames = ShopCategory::query()
+            ->where('category_name', '=', $categoryData['form-name'])
+            ->where('id', '<>', $categoryId)
+            ->get();
         dd($duplicateNames);
+        if (empty($duplicateNames)) {
+            $request->session()->flash('status', 'This name already exist! Change name of category!');
+            return redirect('/admin/category');
+        };
         $category->category_name = $categoryData['form-name'];
         $this->uploadCategoryImage($category, $request);
         $category->category_status = $categoryData['form-status'];
