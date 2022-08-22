@@ -8,17 +8,17 @@
 
 @section('main_content')
 
-    @if (strpos($_SERVER['REQUEST_URI'], 'edit'))
-        <h2>Редактирование категории</h2>
-    @else
-        <h2>Создание категории</h2>
-    @endif
+{{--    @if (strpos($_SERVER['REQUEST_URI'], 'edit'))--}}
+{{--        <h2>Редактирование категории</h2>--}}
+{{--    @else--}}
+{{--        <h2>Создание категории</h2>--}}
+{{--    @endif--}}
     {!! $messageTmpl !!}
-{{--    {{Session::get('status')}}--}}
+    {{--    {{Session::get('status')}}--}}
     <div class="row">
         <div class="col-4">
             <form method="post"
-                  action="{{ $edit ? route('category.edit', [$edit]) : route('category.add')}}"
+{{--                  action="{{ $edit ? route('category.edit', [$edit]) : route('category.add')}}"--}}
                   enctype="multipart/form-data">
                 @csrf
 

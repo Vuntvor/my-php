@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Admin\HelperController;
 use App\Http\Controllers\Controller;
 use App\Models\ShopCategory;
 use Illuminate\Http\Request;
@@ -9,7 +10,6 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-
     public function list()
     {
         $allCategory = ShopCategory::query()->get();
@@ -19,7 +19,7 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(Request $request)
     {
         $categoryQuery = ShopCategory::query();
         $categoryId = null;
@@ -27,6 +27,7 @@ class CategoryController extends Controller
             [
                 'categoryList' => $categoryQuery->get(),
                 'edit' => $categoryId,
+                'messageTmpl' => HelperController::renderMessage($request->session()->get('status')),
             ]
         );
     }
@@ -41,6 +42,13 @@ class CategoryController extends Controller
         $newCategory->parent_category = $categoryData['form-parent'];
         $newCategory->category_rating = $categoryData['form-rating'];
 
+        $duplicateNames = HelperController::getNames($categoryData['form-name']);
+
+        if ($duplicateNames) {
+            $request->session()->flash('status', 'This name already exist! Change name of category!');
+            return redirect(route('category.create'));
+        };
+
         $newCategory->save();
 
         $this->uploadCategoryImage($newCategory, $request);
@@ -52,12 +60,13 @@ class CategoryController extends Controller
         $categoryId = $request->route()->parameter('category_id');
         $category = ShopCategory::find($categoryId);
         $categoryQuery = ShopCategory::query();
-//        $categoryQuery->where()
+
         return view('admin/create_category',
             [
                 'categoryList' => $categoryQuery->get(),
                 'foundCategory' => $category,
                 'edit' => $categoryId,
+                'messageTmpl' => HelperController::renderMessage($request->session()->get('status')),
             ]
         );
     }
@@ -67,14 +76,12 @@ class CategoryController extends Controller
         $categoryData = $request->post('form-category');
         $categoryId = $request->route()->parameter('category_id');
         $category = ShopCategory::find($categoryId);
-        $duplicateNames = ShopCategory::query()
-            ->where('category_name', '=', $categoryData['form-name'])
-            ->where('id', '<>', $categoryId)
-            ->get();
-        dd($duplicateNames);
-        if (empty($duplicateNames)) {
+
+        $duplicateNames = HelperController::getNames($categoryData['form-name']);
+
+        if ($duplicateNames) {
             $request->session()->flash('status', 'This name already exist! Change name of category!');
-            return redirect('/admin/category');
+            return redirect(route('category.edit', ['category_id' => $categoryId]));
         };
         $category->category_name = $categoryData['form-name'];
         $this->uploadCategoryImage($category, $request);
