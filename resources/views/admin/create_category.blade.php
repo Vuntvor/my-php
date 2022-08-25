@@ -13,7 +13,7 @@
     @else
         <h2>Создание категории</h2>
     @endif
-    {!! $messageTmpl !!}
+{{--    {!! $messageTmpl !!}--}}
 {{--    {{Session::get('status')}}--}}
     <div class="row">
         <div class="col-4">

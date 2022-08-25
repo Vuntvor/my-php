@@ -43,7 +43,7 @@ Route::prefix('/admin/category')->group(function () {
 
 });
 
-Route::prefix('/admin/product')->group(function (){
+Route::prefix('/admin/product')->group(function () {
 
     Route::get('/', [AdminProductController::class, 'list'])->name('product.list');
 
@@ -51,5 +51,16 @@ Route::prefix('/admin/product')->group(function (){
 
     Route::post('/add', [AdminProductController::class, 'add'])->name('product.add');
 
+    Route::get('/edit/{product_id}', [AdminProductController::class, 'edit'])
+        ->where('product_id', '[0-9]+')
+        ->name('product.edit');
+
+    Route::post('/edit/{product_id}', [AdminProductController::class, 'save'])
+        ->where('product_id', '[0-9]+')
+        ->name('product.save');
+
+    Route::get('/delete/{product_id}', [AdminProductController::class, 'delete'])
+        ->where('product_id', '[0-9]+')
+        ->name('product.delete');
 });
 

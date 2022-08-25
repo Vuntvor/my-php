@@ -34,8 +34,8 @@
                 <td>{{$oneProduct->created_at}}</td>
                 <td>{{$oneProduct->updated_at}}</td>
                 <td>
-{{--                    <a href="{{route('product.edit', ['product_id'=>$oneProduct->id])}}" class="btn btn-primary">Редактировать</a>--}}
-{{--                    <a href="{{route('product.delete', ['product_id'=>$oneProduct->id])}}" class="btn btn-danger">Удалить</a>--}}
+                    <a href="{{route('product.edit', ['product_id'=>$oneProduct->id])}}" class="btn btn-primary">Редактировать</a>
+                    <a href="{{route('product.delete', ['product_id'=>$oneProduct->id])}}" class="btn btn-danger">Удалить</a>
                 </td>
             </tr>
         @endforeach
@@ -43,5 +43,5 @@
 
 
 
-    <a href="{{route('product.create')}}" class="btn btn-primary">Добавить категорию</a>
+    <a href="{{route('product.create')}}" class="btn btn-primary">Добавить товар</a>
 @endsection
