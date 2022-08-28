@@ -12,4 +12,14 @@ class ShopProduct extends Model
     public function getImageUrl(){
         return '/'.$this->image_url;
     }
+
+    public function parentCategory()
+    {
+        return $this->hasOne(ShopCategory::class, 'parent_category', 'id');
+    }
+
+    public function childCategories()
+    {
+        return $this->hasMany(ShopCategory::class, 'parent_category', 'id');
+    }
 }

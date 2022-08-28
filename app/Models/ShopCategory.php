@@ -15,7 +15,7 @@ class ShopCategory extends Model
 
     public function parentCategory()
     {
-        return $this->hasOne(ShopCategory::class, 'id', 'parent_category');
+        return $this->hasOne(ShopProduct::class, 'parent_category', 'id');
     }
 
     public function childCategories()

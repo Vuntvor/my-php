@@ -20,6 +20,7 @@
             <th>Изменена</th>
         </tr>
         @foreach($productList as $oneProduct)
+            @dd($oneProduct->parentCategory)
             <tr>
                 <td>{{$oneProduct->id}}</td>
                 <td>{{$oneProduct->product_name}}</td>
