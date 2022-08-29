@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 
 //use App\Models\ShopCategory;
+use App\Models\ShopCategory;
 use App\Models\ShopProduct;
 use Illuminate\Http\Request;
 
@@ -24,11 +25,13 @@ class ShopController extends Controller
     public function create(Request $request)
     {
         $productQuery = ShopProduct::query()->get();
+        $categoryQuery = ShopCategory::query()->get();
         $productId = null;
         return view('admin/create_product',
             [
                 'productList' => $productQuery,
                 'edit' => $productId,
+                'categoryList' => $categoryQuery,
                 'messageTmpl' => HelperController::renderMessage($request->session()->get('status')),
             ]
         );
@@ -62,13 +65,15 @@ class ShopController extends Controller
     {
         $productId = $request->route()->parameter('product_id');
         $product = ShopProduct::find($productId);
-        $categoryQuery = ShopProduct::query();
+        $productQuery = ShopProduct::query();
+        $categoryQuery = ShopCategory::query()->get();
 
         return view('admin/create_product',
             [
-                'productList' => $categoryQuery->get(),
+                'productList' => $productQuery->get(),
                 'foundProduct' => $product,
                 'edit' => $productId,
+                'categoryList' => $categoryQuery,
                 'messageTmpl' => HelperController::renderMessage($request->session()->get('status')),
             ]
         );

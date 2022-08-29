@@ -20,7 +20,6 @@
             <th>Изменена</th>
         </tr>
         @foreach($productList as $oneProduct)
-            @dd($oneProduct->parentCategory)
             <tr>
                 <td>{{$oneProduct->id}}</td>
                 <td>{{$oneProduct->product_name}}</td>
@@ -29,7 +28,7 @@
                 </td>
                 <td>{{$oneProduct->product_status == 1 ? 'ON' : 'OFF'}}</td>
                 <td>
-                    {{$oneProduct->product_category}}
+                    {{$oneProduct->category->category_name}}
                 </td>
                 <td>{{$oneProduct->product_price}}</td>
                 <td>{{$oneProduct->created_at}}</td>

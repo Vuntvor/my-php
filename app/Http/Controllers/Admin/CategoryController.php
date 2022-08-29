@@ -60,7 +60,7 @@ class CategoryController extends Controller
         $categoryId = $request->route()->parameter('category_id');
         $category = ShopCategory::find($categoryId);
         $categoryQuery = ShopCategory::query();
-
+        dd($category->product);
         return view('admin/create_category',
             [
                 'categoryList' => $categoryQuery->get(),

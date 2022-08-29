@@ -55,16 +55,16 @@
                 <div class="mb-3">
                     <label class="form-label">Категория</label>
                     <select type="select" name="form-product[form-parent]" class="form-control">
-                        @foreach($productList as $oneProduct)
-                            <option value="{{$oneProduct->id}}">{{$oneProduct->product_name}}</option>
+                        @foreach($categoryList as $oneCategory)
+                            <option value="{{$oneCategory->id}}">{{$oneCategory->category_name}}</option>
                         @endforeach
                     </select>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Цена</label>
-                    <input type="number" class="form-control" name="form-product[form-price]"
-                           value="{{$foundProduct->product_rating?? ""}}"/>
+                    <input type="" class="form-control" name="form-product[form-price]" required="required"
+                           value="{{$foundProduct->product_price?? ""}}"/>
                 </div>
 
                 <a class="btn btn-secondary" href="{{route('product.list')}}">&laquo; Вернуться</a>

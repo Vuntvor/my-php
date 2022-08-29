@@ -9,17 +9,14 @@ class ShopProduct extends Model
 {
     protected $table = 'shop_products';
 
-    public function getImageUrl(){
-        return '/'.$this->image_url;
+    public function getImageUrl()
+    {
+        return '/' . $this->image_url;
     }
 
-    public function parentCategory()
+    public function category()
     {
-        return $this->hasOne(ShopCategory::class, 'parent_category', 'id');
+        return $this->hasOne(ShopCategory::class, 'id', 'product_category');
     }
 
-    public function childCategories()
-    {
-        return $this->hasMany(ShopCategory::class, 'parent_category', 'id');
-    }
 }

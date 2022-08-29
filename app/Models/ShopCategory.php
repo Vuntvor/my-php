@@ -15,12 +15,17 @@ class ShopCategory extends Model
 
     public function parentCategory()
     {
-        return $this->hasOne(ShopProduct::class, 'parent_category', 'id');
+        return $this->hasOne(ShopCategory::class, 'id', 'parent_category');
     }
 
     public function childCategories()
     {
         return $this->hasMany(ShopCategory::class, 'parent_category', 'id');
+    }
+
+    public function product()
+    {
+        return $this->hasMany(ShopProduct::class, 'product_category', 'id');
     }
 }
 
