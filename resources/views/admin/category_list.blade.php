@@ -7,17 +7,6 @@
 
 
 @section('main_content')
-    @if ($resultMessage)
-        @if ($resultMessage['status'] === 'ok')
-            <div class="alert alert-success" role="alert">
-                {{ $resultMessage['message'] }}
-            </div>
-        @elseif ($resultMessage['status'] === 'error')
-            <div class="alert alert-danger" role="alert">
-                {{ $resultMessage['message'] }}
-            </div>
-        @endif
-    @endif
 
     <table class="table table-bordered">
         <tr>
@@ -50,8 +39,8 @@
                 <td>{{$oneCategory->created_at}}</td>
                 <td>{{$oneCategory->updated_at}}</td>
                 <td>
-                    <a href="/admin/category/category_management/edit/{{ $oneCategory->id }}" class="btn btn-primary">Редактировать</a>
-                    <a href="/admin/category/category_management/delete/{{ $oneCategory->id }}" class="btn btn-danger">Удалить</a>
+                    <a href="{{route('category.edit', ['category_id'=>$oneCategory->id])}}" class="btn btn-primary">Редактировать</a>
+                    <a href="{{route('category.delete', ['category_id'=>$oneCategory->id])}}" class="btn btn-danger">Удалить</a>
                 </td>
             </tr>
         @endforeach
@@ -59,5 +48,5 @@
 
 
 
-    <a href="/admin/category/category_management" class="btn btn-primary">Добавить категорию</a>
+    <a href="{{route('category.create')}}" class="btn btn-primary">Добавить категорию</a>
 @endsection

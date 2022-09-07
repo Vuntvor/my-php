@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
 use Illuminate\Support\Str;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\ShopController as AdminProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,24 +17,50 @@ use Illuminate\Support\Str;
 |
 */
 
-Route::get('/', ['App\Http\Controllers\ShopController', 'mainShop']);
+Route::get('/', ['App\Http\Controllers\Admin\MainController', 'mainPage']);
 
-Route::get('/admin', ['App\Http\Controllers\ShopController', 'admin']);
+Route::get('/admin', ['App\Http\Controllers\Admin\MainController', 'index']);
 
-Route::get('/admin/category', ['App\Http\Controllers\ShopController', 'admin_category']);
+Route::prefix('/admin/category')->group(function () {
 
-Route::get('/admin/category/category_management', ['App\Http\Controllers\ShopController', 'create_category']);
+    Route::get('/', [AdminCategoryController::class, 'list'])->name('category.list');
 
-Route::post('/admin/category/category_management/add', ['App\Http\Controllers\ShopController', 'add_category']);
+    Route::get('/create', [AdminCategoryController::class, 'create'])->name('category.create');
 
-Route::get('/admin/category/category_management/edit/{category_id}', ['App\Http\Controllers\ShopController', 'edit_category'])
-    ->where('category_id', '[0-9]+')
-    ->name('edit-category');
+    Route::post('/add', [AdminCategoryController::class, 'add'])->name('category.add');
 
-Route::post('/admin/category/category_management/edit/{category_id}', ['App\Http\Controllers\ShopController', 'save_category'])
-    ->where('category_id', '[0-9]+')
-    ->name('edit-category');
+    Route::get('/edit/{category_id}', [AdminCategoryController::class, 'edit'])
+        ->where('category_id', '[0-9]+')
+        ->name('category.edit');
 
-Route::get('/admin/category/category_management/delete/{category_id}', ['App\Http\Controllers\ShopController', 'delete_category'])
-    ->where('category_id', '[0-9]+')
-    ->name('delete-category');
+    Route::post('/edit/{category_id}', [AdminCategoryController::class, 'save'])
+        ->where('category_id', '[0-9]+')
+        ->name('category.save');
+
+    Route::get('/delete/{category_id}', [AdminCategoryController::class, 'delete'])
+        ->where('category_id', '[0-9]+')
+        ->name('category.delete');
+
+});
+
+Route::prefix('/admin/product')->group(function () {
+
+    Route::get('/', [AdminProductController::class, 'list'])->name('product.list');
+
+    Route::get('/create', [AdminProductController::class, 'create'])->name('product.create');
+
+    Route::post('/add', [AdminProductController::class, 'add'])->name('product.add');
+
+    Route::get('/edit/{product_id}', [AdminProductController::class, 'edit'])
+        ->where('product_id', '[0-9]+')
+        ->name('product.edit');
+
+    Route::post('/edit/{product_id}', [AdminProductController::class, 'save'])
+        ->where('product_id', '[0-9]+')
+        ->name('product.save');
+
+    Route::get('/delete/{product_id}', [AdminProductController::class, 'delete'])
+        ->where('product_id', '[0-9]+')
+        ->name('product.delete');
+});
+
