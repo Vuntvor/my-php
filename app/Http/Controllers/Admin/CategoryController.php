@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Admin\HelperController;
 use App\Http\Controllers\Controller;
 use App\Models\ShopCategory;
+use App\Services\ResultMessage\ResultMessage;
+use App\Services\ResultMessage\ResultMessageInterface;
 use Illuminate\Http\Request;
 
 
@@ -19,20 +21,22 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function create(Request $request)
+    public function create(Request $request, ResultMessageInterface $resultMessage)
     {
+        $resultMessage = new ResultMessage();
+
         $categoryQuery = ShopCategory::query();
         $categoryId = null;
         return view('admin/create_category',
             [
                 'categoryList' => $categoryQuery->get(),
                 'edit' => $categoryId,
-                'messageTmpl' => HelperController::renderMessage($request->session()->get('status')),
+                'messageTmpl' => HelperController::renderMessage($resultMessage->get('category.add')),
             ]
         );
     }
 
-    public function add(Request $request)
+    public function add(Request $request, ResultMessageInterface $resultMessage)
     {
         $categoryData = $request->post('form-category');
 
@@ -45,13 +49,17 @@ class CategoryController extends Controller
         $duplicateNames = HelperController::getNames($categoryData['form-name']);
 
         if ($duplicateNames) {
-            $request->session()->flash('status', 'This name already exist! Change name of category!');
+            $resultMessage->add('category.add', 'This name already exist! Change name of category!');
             return redirect(route('category.create'));
-        };
+        }
 
         $newCategory->save();
 
         $this->uploadCategoryImage($newCategory, $request);
+        // TODO: add message for user
+        // $request->session()->flash('status', 'Task was successful!');
+        $resultMessage->add('category.add', 'Category created!');
+
         return redirect('/admin/category');
     }
 
